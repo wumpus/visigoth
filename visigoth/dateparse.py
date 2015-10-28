@@ -4,9 +4,12 @@ import re
 import sys
 
 # All captures are currently in building_blocks. That probably has to change to fix the following limitations:
-# XXX currently only capturing the year.
-# XXX currently only capturing only one year, not decades and centuries
-# XXX currently not capturing AD vs BC
+#  XXX currently only capturing the year, and not the date/month
+#  XXX currently only capturing only one year, not decades and centuries
+#  XXX currently not capturing AD vs BC
+
+# MEK curious if this sort of thing is pythonic?
+
 building_blocks = [
     { 'name': 'CALENDAR', 'pat': '(?:A\\.D\\.|AD|C\\.E\\.|CE|B\\.C\\.|BC|B\\.C\\.E\\.|BCE)' },
     { 'name': '1to3DIGIT', 'pat': '(\\d{1,3})' },
@@ -120,11 +123,12 @@ class dateparse:
         for item in dates:
             item['pat'] = item['name']
 
-            if 'answer' not in item:
+            if 'answer' not in item: # default answer
                 item['answer'] = '1601'
             if 'test' not in item:
                 print("item", item['name'], "lacks a test", file=sys.stderr) # XXX make this raise an exception, to ensure 100% coverage
 
+            # add word-breaks if implicit
             if item['pat'][0].isalnum():
                 item['pat'] = '\\b' + item['pat']
             if item['pat'][-1].isalnum():
@@ -133,8 +137,6 @@ class dateparse:
             for b in building_blocks:
                 item['pat'] = re.sub(b['name'], b['pat'], item['pat'])
             item['count'] = 0
-
-#            item['pat'] = re.compile(item['pat'], re.I) # dont do this, because we're going to combine them all
 
         comb_pat = "|".join(item['pat'] for item in dates)
         return re.compile(comb_pat, re.I)
@@ -172,5 +174,4 @@ class dateparse:
 if __name__ == "__main__":
     dp = dateparse()
     dp.run_builtin_tests()
-    ret = dp.extract_dates("Queen Elizabeth I died in 1603.")
-    print("Got", ret)
+

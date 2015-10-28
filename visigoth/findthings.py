@@ -88,6 +88,7 @@ class findthings:
                     # we have a single word. wikipedia has title-cased it if it was all-lower... we
                     # want to keep proper nouns and drop wikiwords, but wikipedia doesn't help much
                     # XXX use wikiwords?
+                    # XXX the existing code drops words like Abolitionist
                     mixedc = self.mixedcase_word_dict.get(title.lower())
                     titlec = self.titlecase_word_dict.get(title.lower())
                     lowerc = self.lowercase_word_dict.get(title.lower())
