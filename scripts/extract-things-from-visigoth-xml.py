@@ -17,6 +17,9 @@ from visigoth.findthings import findthings # XXX what did I screw up here?
 
 def process_one_file(file):
 
+    if not os.path.isfile(file):
+        return
+
     stage_string = 'visigoth-me-harder-extract'
     version_string = '0.0' # should also include a git id
     pipeline_stats = {}
