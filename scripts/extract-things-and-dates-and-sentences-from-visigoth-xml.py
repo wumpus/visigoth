@@ -4,19 +4,21 @@ import sys
 files = sys.argv[1:]
 
 import xml.etree.ElementTree as ET
-import os.path
+import os
 import re
 import gzip
 import csv
 import time
 
-import os.path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from visigoth.findthings import findthings # XXX what did I screw up here?
 from visigoth.dateparse import dateparse # XXX what did I screw up here?
 
 def process_one_file(file):
+
+    if not os.path.isfile(file):
+        return
 
     stage_string = 'visigoth-me-harder-extract'
     version_string = '0.0' # should also include a git id
@@ -72,7 +74,7 @@ def process_one_file(file):
     # poor man's sentence split (ought to use that dict)
 
     dot_dict = {}
-    f = open(os.path.expanduser('~/linux.words.centos7.dotend.edited'), 'r')
+    f = open(os.environ.get('VISIGOTH_DATA', '.') + '/linux.words.centos7.dotend.edited', 'r')
     for line in f:
        dot_dict[line.rstrip()] = 1
     f.close()

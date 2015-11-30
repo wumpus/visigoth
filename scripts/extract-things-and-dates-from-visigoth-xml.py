@@ -72,7 +72,7 @@ def process_one_file(file):
     # poor man's sentence split (ought to use that dict)
 
     dot_dict = {}
-    f = open(os.path.expanduser('~/linux.words.centos7.dotend.edited'), 'r')
+    f = open(os.environ.get('VISIGOTH_DATA', '.') + '/linux.words.centos7.dotend.edited', 'r')
     for line in f:
        dot_dict[line.rstrip()] = 1
     f.close()
