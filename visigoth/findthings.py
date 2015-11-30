@@ -57,9 +57,9 @@ class findthings:
 
     def run_tests(self):
         results = self.find_things("Charles Darwin and Prince went to the movie about NASA.")
-        print("results are", results, "sentence is", "Charles Darwin and Prince went to the movie about NASA." )
+        print("results are", results, "sentence is:", "Charles Darwin and Prince went to the movie about NASA." )
         results = self.find_things("NASA.")
-        print("results are", results, "sentence is", "NASA." )
+        print("results are", results, "sentence is:", "NASA." )
                 
 if __name__ == "__main__":
     ft = findthings()
