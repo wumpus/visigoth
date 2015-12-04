@@ -18,6 +18,7 @@ from visigoth.dateparse import dateparse # XXX what did I screw up here?
 def process_one_file(file):
 
     if not os.path.isfile(file):
+        print("Skipping", file, "because it does not exist.")
         return
 
     stage_string = 'visigoth-me-harder-extract'
