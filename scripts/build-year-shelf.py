@@ -1,48 +1,54 @@
 #!/usr/bin/env python3
 
-# ./build-year-pickle.py *.thing-date.csv
+# rm $VISIGOTH_DATA/years_pickle # or not, this script is incremental 
+# ./build-year-shelf.py *.thing-date.csv
 
 import sys
 files = sys.argv[1:]
 
 import csv
-import pickle
+import shelve
 
-years = {} # thing, year, count
-
-# XXX use all the redirs and not just this one!
-thingmap = { 'Gregory XIII': 'Pope Gregory XIII' }
+import os.path
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from visigoth.redirs import redirs # XXX what did I screw up here?
 
 def process_one_file(file):
+
+    if not os.path.isfile(file):
+        print("Skipping", file, "because it does not exist.")
+        return
+
     with open(file, 'r', newline='') as csvfile:
         r = csv.reader(csvfile, delimiter='\t')
         for row in r:
             year, thing, score = row
+
+            # skip the first row
             if score == 'score':
                 continue
 
             year = int(year)
-            if year < 1000:
+            if year >= 2015: # probably wrong, if it's this big
                 continue
-            if year >= 2000:
-                continue
-            if thingmap.get(thing) is not None:
-                thing = thingmap[thing]
 
-            thing = thing.lower()
+            canon = redir.forward(thing)
 
-            if years.get(thing) is None:
-                years[thing] = {}
+            #if canon != thing:
+            #    print("DEBUG:", thing, "forwarded to", canon)
 
-            years[thing][year] = years[thing].get(year,0) + int(score)
+            # because of shelf mutability issues, do a read-modify-write
+            y = years.get(thing, {})
+            y[year] = y.get(year,0) + int(score)
+            years[thing] = y
+
+redir = redirs()
+
+# create if does not exist
+years = shelve.open(os.environ.get('VISIGOTH_DATA','')+'/year_shelf', flag='c', writeback=True)
 
 for file in files:
     process_one_file(file)
 
-# I tried to compress the pickle by changing years[thing] into a list
-# from a dict, but it remained the same size. Never mind.
-
-f = open("years_pickle", 'wb') # utf-8?
-
-pickle.dump(years, f)
-
+print("Beginning writeback")
+years.close()
