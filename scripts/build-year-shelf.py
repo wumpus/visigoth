@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-# rm $VISIGOTH_DATA/years_pickle # or not, this script is incremental 
+# rm $VISIGOTH_DATA/year_shelf # or not, this script is incremental 
 # ./build-year-shelf.py *.thing-date.csv
+
+# this script will double-count, so don't send in any books twice
 
 import sys
 files = sys.argv[1:]
@@ -49,6 +51,7 @@ years = shelve.open(os.environ.get('VISIGOTH_DATA','')+'/year_shelf', flag='c', 
 
 for file in files:
     process_one_file(file)
+    print("Processed", file)
 
 print("Beginning writeback")
 years.close()
