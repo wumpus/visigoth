@@ -22,16 +22,29 @@ class redirs:
 
         f = self.forwards.get(thing)
         if f == '':
-            f = thing
+            if not thing.islower():
+                f = thing
+            else:
+                # XXX to fix a bug in previous build-redir-shelf version
+                mixed = thing[0].upper() + thing[1:]
+                f = self.forwards.get(mixed, thing)
+                if f == '':
+                    f = mixed
         if f is None:
             f = self.forwards.get(thing.lower())
-        if f == '':
-            f = thing.lower()
+            if f == '':
+                if not thing.islower():
+                    f = thing
+                else:
+                    # XXX fix a bug in previous build-redir-shelf version
+                    mixed = thing[0].upper() + thing[1:]
+                    f = self.forwards.get(mixed, thing)
+                    if f == '':
+                        f = mixed
 
         # already canon
         if f == thing or f == thing.lower():
             return f
-
 
         ff = self.forwards.get(f)
         if ff == '':
@@ -40,11 +53,11 @@ class redirs:
             ff = self.forwards.get(f.lower())
         if ff == '':
             return f
-        if ff is not None:
-            return ff
 
-        # can we reach here?
-        return thing
+        if ff is None:
+            return thing
+        else:
+            return ff
 
     def backward(self, canon):
         """
