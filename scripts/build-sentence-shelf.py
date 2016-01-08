@@ -10,7 +10,7 @@ import os
 import csv
 import shelve
 from random import shuffle
-from operator import attrgetter
+from operator import itemgetter
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from visigoth.redirs import redirs # XXX what did I screw up here?
@@ -99,7 +99,7 @@ def process_one_file(file):
 
 # create if does not exist
 print("opening sentence shelf")
-sentence = shelve.open(os.environ.get('VISIGOTH_DATA','')+'/sentence_shelf', flag='c', writeback=True)
+sentence = shelve.open(os.environ.get('VISIGOTH_DATA','')+'/sentence_shelf', flag='c')
 
 # source of book rank, title
 print("opening metadata shelf")
