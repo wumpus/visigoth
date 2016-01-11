@@ -31,7 +31,7 @@ def process_one_file(file):
 
     present = {}
 
-    (ia_id, rest) = file.split(sep='_', maxsplit=1)
+    (ia_id, rest) = file.rsplit(sep='_', maxsplit=1)
     print("Got ia_id of", ia_id,"from file", file)
 
     m = metadata.get(ia_id)
