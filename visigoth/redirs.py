@@ -20,7 +20,7 @@ class redirs:
         We currently do at most 2 hops.
         """
 
-        f = self.forwards.get(thing)
+        f = self.forwards.get(thing, '')
         if f == '':
             if not thing.islower():
                 f = thing
@@ -46,11 +46,11 @@ class redirs:
         if f == thing or f == thing.lower():
             return f
 
-        ff = self.forwards.get(f)
+        ff = self.forwards.get(f, '')
         if ff == '':
             return f
         if ff is None:
-            ff = self.forwards.get(f.lower())
+            ff = self.forwards.get(f.lower(), thing)
         if ff == '':
             return f
 
