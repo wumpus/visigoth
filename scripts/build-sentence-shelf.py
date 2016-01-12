@@ -66,7 +66,7 @@ def process_one_file(file):
                 sent.replace(thing.lower(), "<b>"+thing.lower()+"</b>")
             else:
                 print("Failed to bold", thing, "in sentence", sent)
-                # XXX this is seeing 'foo' when 'Foo' is in the sentence.
+                # XXX also handle mixed case misses? case-blind re?
 
             # sentence needs a 2D key (thing, year) to reduce pickle cpu burn & i/o when serving
             key = canon + " " + str(year)
