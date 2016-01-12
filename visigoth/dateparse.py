@@ -6,7 +6,7 @@ import sys
 # All captures are currently in building_blocks. That probably has to change to fix the following limitations:
 #  XXX currently only capturing the year, and not the date/month
 #  XXX currently only capturing only one year, not decades and centuries
-#  XXX currently not capturing AD vs BC
+#  XXX currently not capturing AD vs BC (make BC negative?)
 
 # MEK curious if this sort of thing is pythonic?
 
@@ -47,7 +47,7 @@ strong_dates = [
     { 'name': 'end of 4DIGIT', 'test': 'end of 1601' },
     { 'name': 'start of 4DIGIT', 'test': 'start of 1601' },
     { 'name': 'beginning of 4DIGIT', 'test': 'beginning of 1601' },
-    { 'name': 'around 4DIGIT', 'test': 'around 1601' },
+    { 'name': 'around 4DIGIT', 'test': 'around 1601' }, # XXX bug: "around 1000 pounds"
     { 'name': 'mid-4DIGIT', 'test': 'mid-1601' },
     { 'name': 'middle of 4DIGIT', 'test': 'middle of 1601' },
     { 'name': 'pre-4DIGIT', 'test': 'pre-1601' },
